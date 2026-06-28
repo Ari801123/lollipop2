@@ -26,11 +26,10 @@ function createResource() {
       "-loglevel", "0",
       "-analyzeduration", "0",
 
-      "-f", "ogg",
-      "-c:a", "libopus",
-
-      "-ar", "48000",
-      "-ac", "2",
+"-f", "s16le",
+"-ar", "48000",
+"-ac", "2",
+"pipe:1"
 
       "pipe:1"
   ]);

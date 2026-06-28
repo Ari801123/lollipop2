@@ -9,13 +9,16 @@ const {
 } = require("@discordjs/voice");
 
 const { spawn } = require("child_process");
-const ffmpeg = require("ffmpeg-static");
+
+// Railway koristi sistemski ffmpeg iz nixpacks.toml
+const ffmpeg = "ffmpeg";
 
 const RADIO_URL = "https://streaming.tdiradio.com/lollipop.mp3";
 
 const player = createAudioPlayer();
 
 player.on("error", error => console.error("PLAYER ERROR:", error));
+
 player.on("stateChange", (oldState, newState) => {
   console.log(`Player state: ${oldState.status} -> ${newState.status}`);
 });
@@ -78,11 +81,13 @@ async function play(channel) {
   });
 
   await entersState(connection, VoiceConnectionStatus.Ready, 20000);
+
   console.log("Voice connection READY");
 
   connection.subscribe(player);
 
   player.removeAllListeners(AudioPlayerStatus.Idle);
+
   player.on(AudioPlayerStatus.Idle, () => {
     console.log("Player idle, restartam stream za 5 sekundi...");
     setTimeout(() => {
@@ -96,4 +101,6 @@ async function play(channel) {
   return connection;
 }
 
-module.exports = { play };
+module.exports = {
+  play
+};

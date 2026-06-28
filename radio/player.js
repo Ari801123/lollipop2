@@ -20,34 +20,28 @@ function createResource() {
     "-reconnect", "1",
     "-reconnect_streamed", "1",
     "-reconnect_delay_max", "5",
-
     "-i", RADIO_URL,
-
-      "-loglevel", "0",
-      "-analyzeduration", "0",
-
-"-f", "s16le",
-"-ar", "48000",
-"-ac", "2",
-"pipe:1"
-
-      "pipe:1"
+    "-loglevel", "0",
+    "-analyzeduration", "0",
+    "-f", "s16le",
+    "-ar", "48000",
+    "-ac", "2",
+    "pipe:1"
   ]);
 
-    ff.stderr.on("data", data => {
-        console.log(data.toString());
-    });
+  ff.stderr.on("data", data => {
+    console.log(data.toString());
+  });
+
   ff.on("error", console.error);
 
-return createAudioResource(ff.stdout, {
-  inputType: StreamType.Raw,
-  inlineVolume: false
-});
+  return createAudioResource(ff.stdout, {
+    inputType: StreamType.Raw,
+    inlineVolume: false
   });
 }
 
 async function play(channel) {
-
   const connection = joinVoiceChannel({
     channelId: channel.id,
     guildId: channel.guild.id,
@@ -55,21 +49,16 @@ async function play(channel) {
     selfDeaf: false
   });
 
-  await entersState(
-    connection,
-    VoiceConnectionStatus.Ready,
-    20000
-  );
+  await entersState(connection, VoiceConnectionStatus.Ready, 20000);
 
   connection.subscribe(player);
 
-  player.play(createResource());
-
   player.removeAllListeners(AudioPlayerStatus.Idle);
-
   player.on(AudioPlayerStatus.Idle, () => {
     player.play(createResource());
   });
+
+  player.play(createResource());
 
   return connection;
 }

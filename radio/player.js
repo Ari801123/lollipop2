@@ -39,9 +39,10 @@ function createResource() {
     });
   ff.on("error", console.error);
 
-  return createAudioResource(ff.stdout, {
-    inputType: StreamType.OggOpus,
-    inlineVolume: false
+return createAudioResource(ff.stdout, {
+  inputType: StreamType.Raw,
+  inlineVolume: false
+});
   });
 }
 

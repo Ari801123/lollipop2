@@ -31,10 +31,14 @@ function createResource() {
     "-reconnect_streamed", "1",
     "-reconnect_delay_max", "5",
 
+    "-user_agent", "Mozilla/5.0",
+    "-headers", "Icy-MetaData: 1\r\n",
+
     "-i", RADIO_URL,
 
     "-loglevel", "warning",
-    "-analyzeduration", "0",
+    "-analyzeduration", "1000000",
+    "-probesize", "1000000",
 
     "-f", "s16le",
     "-ar", "48000",
